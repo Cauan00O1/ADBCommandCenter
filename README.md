@@ -20,16 +20,15 @@ The project is built using **Clean Architecture** principles and modern Android 
 To add a new feature to the main application grid:
 
 ### 1. Define the Route
-Add a `@Serializable` destination to `Screen.kt`.
+Add a `@Serializable` destination to [Screen.kt](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/java/com/joaomgcd/adbcommandcenter/main/navigation/Screen.kt).
 
 ```kotlin
-// com.joaomgcd.adbcommandcenter.main.navigation.Screen.kt
 @Serializable
 object MyFeature : Screen()
 ```
 
 ### 2. Create the ViewModel
-Inject `RunActiveAdbShellCommandUseCase` to execute shell commands against the active connection.
+Inject [RunActiveAdbShellCommandUseCase.kt](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/java/com/joaomgcd/adbcommandcenter/adb/connection/domain/RunActiveAdbShellCommandUseCase.kt) to execute shell commands against the active connection.
 
 ```kotlin
 @HiltViewModel
@@ -46,20 +45,18 @@ class MyFeatureViewModel @Inject constructor(
 ```
 
 ### 3. Register the Screen
-Add the composable destination to the `NavHost` in `AdbControlCenterApp.kt`.
+Add the composable destination to the `NavHost` in [AdbControlCenterApp.kt](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/java/com/joaomgcd/adbcommandcenter/ui/AdbControlCenterApp.kt).
 
 ```kotlin
-// com.joaomgcd.adbcommandcenter.ui.AdbControlCenterApp.kt
 composable<Screen.MyFeature> {
     MyFeatureScreen(onBackPressed = onBackPressed)
 }
 ```
 
 ### 4. Add to Dashboard
-Add your feature to the `features` list in `MainScreen.kt` to make it appear on the home grid.
+Add your feature to the `features` list in [MainScreen.kt](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/java/com/joaomgcd/adbcommandcenter/main/ui/MainScreen.kt) to make it appear on the home grid.
 
 ```kotlin
-// com.joaomgcd.adbcommandcenter.main.ui.MainScreen.kt
 private val features = listOf(
     // ... existing features
     DashboardFeature("My Feature", Icons.Default.Star, Screen.MyFeature)
@@ -70,19 +67,19 @@ private val features = listOf(
 
 ## Tasker Plugin Integration
 
-The app provides a seamless Tasker integration. You can find an existing example in the **ADB Shell Command** action.
+The app provides a seamless Tasker integration. You can find an existing example in the **ADB Shell Command** action defined in [TaskerShellCommand.kt](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/java/com/joaomgcd/adbcommandcenter/adb/shell/tasker/TaskerShellCommand.kt).
 
 ### Example: ADB Shell Command
 The `TaskerShellCommandRunner` demonstrates how to bridge Tasker to the ADB logic:
-
 1.  **Input**: Accepts a `command` string from Tasker.
 2.  **Execution**: Uses `RunActiveAdbShellCommandUseCase` to run the command.
 3.  **Output**: Returns the shell output to Tasker as a `%result` variable.
 
 ### How to Add a New Tasker Action
 
+
 #### 1. Define IO DTOs
-Define the input fields and output variables for Tasker.
+Define the input fields and output variables for Tasker using the library annotations.
 
 ```kotlin
 @TaskerInputRoot
@@ -99,6 +96,7 @@ class MyActionOutput(
 #### 2. Create the Hilt EntryPoint
 Since Tasker runners are instantiated by the system, use an `@EntryPoint` to access UseCases.
 
+
 ```kotlin
 @EntryPoint
 @InstallIn(SingletonComponent::class)
@@ -106,9 +104,8 @@ interface MyActionEntryPoint {
     val runShell: RunActiveAdbShellCommandUseCase
 }
 ```
-
 #### 3. Implement the Runner
-Extend `TaskerPluginRunnerAdbCommandCenter`. This handles the synchronous execution bridge for Tasker.
+Extend [TaskerPluginRunnerAdbCommandCenter.kt](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/java/com/joaomgcd/adbcommandcenter/adb/tasker/runner/TaskerPluginRunnerAdbCommandCenter.kt). This handles the synchronous execution bridge for Tasker.
 
 ```kotlin
 class MyActionRunner : TaskerPluginRunnerAdbCommandCenter<MyActionInput, MyActionOutput, MyActionEntryPoint>() {
@@ -122,7 +119,6 @@ class MyActionRunner : TaskerPluginRunnerAdbCommandCenter<MyActionInput, MyActio
     }
 }
 ```
-
 #### 4. Boilerplate Helper
 Link the runner and IO classes for the Tasker library.
 
@@ -136,18 +132,49 @@ class MyActionHelper(config: TaskerPluginConfig<MyActionInput>) :
 ```
 
 #### 5. Configuration UI
-Extend `TaskerPluginConfigActivity` and `TaskerPluginConfigViewModel` to provide the Compose-based configuration screen.
+Extend [TaskerPluginConfigActivity.kt](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/java/com/joaomgcd/adbcommandcenter/adb/tasker/ui/TaskerPluginConfigActivity.kt) and [TaskerPluginConfigViewModel.kt](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/java/com/joaomgcd/adbcommandcenter/adb/tasker/ui/TaskerPluginConfigViewModel.kt) to provide the Compose-based configuration screen.
+
+**ViewModel:**
+```kotlin
+@HiltViewModel
+class MyActionViewModel @Inject constructor() : TaskerPluginConfigViewModel<MyActionInput>() {
+    override val defaultInput = MyActionInput()
+    override val defaultTitle = "My Custom Action"
+
+    fun onValueChanged(newValue: String) {
+        updateInput(MyActionInput(newValue))
+    }
+}
+```
+
+**Activity:**
+```kotlin
+@AndroidEntryPoint
+class MyActionActivity : TaskerPluginConfigActivity<MyActionInput, MyActionViewModel>() {
+    override val taskerHelper by lazy { MyActionHelper(this) }
+    override val viewModel: MyActionViewModel by viewModels()
+
+    @Composable
+    override fun ColumnScope.Content(viewModel: MyActionViewModel) {
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+        
+        OutlinedTextField(
+            value = uiState.input.value,
+            onValueChange = { viewModel.onValueChanged(it) },
+            label = { Text("Input Value") },
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+```
+
+*   **Hilt Note**: Use `@AndroidEntryPoint` and `@HiltViewModel` to ensure dependencies are injected correctly during the Tasker configuration flow.
 
 #### 6. Manifest Registration
-Register the activity with the specific Tasker intent filter:
+Register the activity in [AndroidManifest.xml](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/AndroidManifest.xml) with the required intent filter:
 
 ```xml
-<activity
-    android:name=".path.to.MyActionActivity"
-    android:exported="true"
-    android:label="My Action">
-    <intent-filter>
-        <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
-    </intent-filter>
-</activity>
+<intent-filter>
+    <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
+</intent-filter>
 ```
