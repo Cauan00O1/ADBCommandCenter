@@ -1,6 +1,5 @@
 package com.joaomgcd.adbcommandcenter.main.navigation
 
-import com.joaomgcd.adbcommandcenter.apps.domain.AppInfo
 import kotlinx.serialization.Serializable
 
 @Serializable
